@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Css_Setting.css') }}">
+    <link rel="stylesheet" href="/DSN31/static/Css_Setting.css">
+</head>
+<body>
+    <h1 id="Setting">Setting</h1>
+    <a href="../note.html" target="_blank">
+        <h1 id="Note">Note</h1>
+    </a>
+    
+    <div id="box">
+        <br>
+        <form action="/video_feed" method="POST" class="form1">  <!-- ใช้ method post -->
+            <label for="tone" class="label1">ตัวเลือกโทนสี</label>
+            <select name="tone" id="tone">
+                <option value="ทางการ" selected>ทางการ</option>
+                <option value="โดดเด่น">โดดเด่น</option>
+                <option value="อ่อนโยน">อ่อนโยน</option>
+                <option value="สุขุม">สุขุม</option>
+                <option value="ขอเบๆ">ขอเบๆ</option>
+            </select>
+            <br>
+            <br>
+            <br>
+            <br>
+            <label for="activity" class="label2">กิจกรรม</label>
+            <select name="activity" id="activity">
+                <option value="ทางการ" selected>ทางการ</option>
+                <option value="ที่ท่องเที่ยวธรรมชาติ">ที่ท่องเที่ยวธรรมชาติ</option>
+                <option value="ที่ท่องเที่ยวในเมือง">ที่ท่องเที่ยวในเมือง</option>
+                <option value="ปาร์ตี้">ปาร์ตี้</option>
+            </select>
+            <br>
+            <br>
+            <br>
+            <br>
+            <input type="submit" value="Finish" id="submit">
+        </form>
+    </div>
+    <div id="warning">Warning: <br>
+        <br>
+        &nbsp;&nbsp;ณ ตอนนี้ยังอยู่ในขั้นตอนพัฒนา(Demo) อาจเกิดการ Error และ Bug ได้
+        และความสามารถในการตรวจจับอาจยังไม่เสถียรพอ อาจมีการคลาดเคลื่อนของสีและตำแหน่งต่างๆ 
+    </div>
+    <div id="warningeng">Warning: <br>
+        <br>
+        &nbsp;&nbsp;It is still in the development stage (Demo). Errors and errors may occur.
+        And perhaps it's not time yet that we may encounter some discrepancies in colors and positions.
+    </div>
+    
+</body>
+</html>

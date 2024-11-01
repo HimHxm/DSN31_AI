@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notepad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .calendar {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .calendar-header {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+        .day {
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .day.selected {
+            background-color: #007BFF;
+            color: white;
+        }
+        .notepad {
+            width: 300px;
+            height: 400px;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="calendar">
+        <div class="calendar-header" id="calendarHeader">October 2024</div>
+        <div class="calendar-days" id="calendarDays"></div>
+    </div>
+    <div class="notepad">
+        <textarea id="note" placeholder="จดบันทึกสำหรับวันนี้..."></textarea>
+    </div>
+</div>
+
+<script>
+    const noteArea = document.getElementById('note');
+    const calendarDays = document.getElementById('calendarDays');
+    const calendarHeader = document.getElementById('calendarHeader');
+    const today = new Date();
+    let selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // อัปเดตหัวข้อปฏิทินให้แสดงเดือนและปี
+    function updateCalendarHeader() {
+        calendarHeader.textContent = selectedDate.toLocaleDateString('th-TH', { year: 'numeric', month: 'long' });
+    }
+
+    // แสดงวันที่ในปฏิทิน
+    function renderCalendar() {
+        calendarDays.innerHTML = '';
+        const firstDayOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+        const lastDayOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+        const daysInMonth = lastDayOfMonth.getDate();
+        
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement('div');
+            day.classList.add('day');
+            day.textContent = i;
+            day.addEventListener('click', () => selectDate(i));
+
+            // เน้นวันที่ปัจจุบัน
+            if (i === today.getDate() && selectedDate.getMonth() === today.getMonth() && selectedDate.getFullYear() === today.getFullYear()) {
+                day.classList.add('selected');
+            }
+
+            calendarDays.appendChild(day);
+        }
+        updateCalendarHeader();
+    }
+
+    // เลือกวันที่และบันทึกโน้ต
+    function selectDate(day) {
+        selectedDate.setDate(day);
+        saveNote();  // บันทึกโน้ตก่อนที่จะโหลดวันใหม่
+        loadNote();  // โหลดโน้ตสำหรับวันที่ที่เลือก
+
+        // อัปเดตสไตล์ให้แสดงวันที่ที่เลือก
+        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+        document.querySelectorAll('.day')[day - 1].classList.add('selected');
+    }
+
+    // บันทึกโน้ตสำหรับวันนั้นลงใน localStorage
+    function saveNote() {
+        const key = selectedDate.toDateString();
+        const note = noteArea.value;
+        localStorage.setItem(key, note);
+    }
+
+    // โหลดโน้ตของวันที่เลือกมาแสดงในโน้ตแพด
+    function loadNote() {
+        const key = selectedDate.toDateString();
+        const note = localStorage.getItem(key);
+        noteArea.value = note || ''; // แสดงโน้ต หรือช่องว่างถ้าไม่มีโน้ต
+    }
+
+    // อัปเดตโน้ตทุกครั้งที่มีการพิมพ์
+    noteArea.addEventListener('input', saveNote);
+
+    // เรียกใช้ฟังก์ชันแสดงปฏิทินและโหลดโน้ตของวันที่ปัจจุบันเมื่อโหลดหน้าเว็บ
+    renderCalendar();
+    loadNote();
+</script>
+
+</body>
+</html>
